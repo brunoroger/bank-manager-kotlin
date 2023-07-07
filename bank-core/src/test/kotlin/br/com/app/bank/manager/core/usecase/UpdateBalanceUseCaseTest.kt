@@ -2,7 +2,7 @@ package br.com.app.bank.manager.core.usecase
 
 import br.com.app.bank.manager.core.command.UpdateBalanceCommand
 import br.com.app.bank.manager.core.exception.AccountNotFoundException
-import br.com.app.bank.manager.core.repository.AccountRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import br.com.app.bank.manager.domain.enums.Operation
 import io.mockk.MockKAnnotations
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 class UpdateBalanceUseCaseTest{
 
     @MockK
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountPersistenceAdapter: AccountPersistenceAdapter
 
     @InjectMockKs
     private lateinit var updateBalanceUseCase: UpdateBalanceUseCase
@@ -36,12 +36,12 @@ class UpdateBalanceUseCaseTest{
 
     @Test
     fun `should update balance`(){
-        every { accountRepository.findByDocument(account.document) } returns account
-        every { accountRepository.save(any()) } returns Unit
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns account
+        every { accountPersistenceAdapter.save(any()) } returns Unit
 
         updateBalanceUseCase.execute(updateBalanceCommand)
 
-        verify { accountRepository.save(withArg {
+        verify { accountPersistenceAdapter.save(withArg {
             Assertions.assertEquals(updateBalanceCommand.amount, it.balance)
             Assertions.assertEquals(1, it.listTransaction.size)
         }) }
@@ -49,7 +49,7 @@ class UpdateBalanceUseCaseTest{
 
     @Test
     fun `should not find account`(){
-        every { accountRepository.findByDocument(account.document) } returns null
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns null
 
         Assertions.assertThrows(AccountNotFoundException::class.java){
             updateBalanceUseCase.execute(updateBalanceCommand)

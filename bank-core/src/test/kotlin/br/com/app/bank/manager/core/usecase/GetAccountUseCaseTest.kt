@@ -2,7 +2,7 @@ package br.com.app.bank.manager.core.usecase
 
 import br.com.app.bank.manager.core.command.GetAccountCommand
 import br.com.app.bank.manager.core.exception.AccountNotFoundException
-import br.com.app.bank.manager.core.repository.AccountRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 class GetAccountUseCaseTest{
 
     @MockK
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountPersistenceAdapter: AccountPersistenceAdapter
 
     @InjectMockKs
     private lateinit var getAccountUseCase: GetAccountUseCase
@@ -31,14 +31,14 @@ class GetAccountUseCaseTest{
 
     @Test
     fun `should get account`(){
-        every { accountRepository.findByDocument(account.document) } returns account
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns account
 
         getAccountUseCase.execute(getAccountCommand)
     }
 
     @Test
     fun `should get account not found`(){
-        every { accountRepository.findByDocument(account.document) } returns null
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns null
 
         Assertions.assertThrows(
             AccountNotFoundException::class.java

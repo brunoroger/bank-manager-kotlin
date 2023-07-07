@@ -1,8 +1,8 @@
-package br.com.app.bank.manager.core.repository
+package br.com.app.bank.manager.core.adapters
 
 import br.com.app.bank.manager.domain.Account
 
-interface AccountRepository {
+interface AccountPersistenceAdapter {
     fun findByDocument(document: String): Account?
     fun save(account: Account)
 

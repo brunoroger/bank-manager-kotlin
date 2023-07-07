@@ -1,14 +1,14 @@
-package br.com.app.bank.manager.app.repository
+package br.com.app.bank.manager.app.adapters
 
-import br.com.app.bank.manager.app.repository.jpa.TransactionJPARepository
-import br.com.app.bank.manager.core.repository.TransactionRepository
+import br.com.app.bank.manager.app.adapters.jpa.TransactionJPARepository
+import br.com.app.bank.manager.core.adapters.TransactionPersistenceAdapter
 import br.com.app.bank.manager.domain.Transaction
 import br.com.app.bank.manager.domain.enums.Operation
 import org.springframework.stereotype.Component
 import java.util.UUID
 
 @Component
-class TransactionRepositoryImp(private val transactionJPARepository: TransactionJPARepository): TransactionRepository {
+class TransactionPersistenceAdapterImp(private val transactionJPARepository: TransactionJPARepository): TransactionPersistenceAdapter {
     override fun findByDocument(document: String) =
         transactionJPARepository.findByDocument(document).map {
             Transaction(

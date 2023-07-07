@@ -2,8 +2,8 @@ package br.com.app.bank.manager.core.usecase
 
 import br.com.app.bank.manager.core.command.ExtractCommand
 import br.com.app.bank.manager.core.exception.AccountNotFoundException
-import br.com.app.bank.manager.core.repository.AccountRepository
-import br.com.app.bank.manager.core.repository.TransactionRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
+import br.com.app.bank.manager.core.adapters.TransactionPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import br.com.app.bank.manager.domain.Transaction
 import br.com.app.bank.manager.domain.enums.Operation
@@ -18,10 +18,10 @@ import org.junit.jupiter.api.Test
 class ExtractUseCaseTest {
 
     @MockK
-    private lateinit var transactionRepository: TransactionRepository
+    private lateinit var transactionPersistenceAdapter: TransactionPersistenceAdapter
 
     @MockK
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountPersistenceAdapter: AccountPersistenceAdapter
 
     @InjectMockKs
     private lateinit var extractUseCase: ExtractUseCase
@@ -43,15 +43,15 @@ class ExtractUseCaseTest {
 
     @Test
     fun `should extract account`(){
-        every { accountRepository.findByDocument(account.document) } returns account
-        every { transactionRepository.findByDocument(account.document) } returns account.listTransaction
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns account
+        every { transactionPersistenceAdapter.findByDocument(account.document) } returns account.listTransaction
 
         Assertions.assertEquals(extractUseCase.execute(extractCommand), account.listTransaction)
     }
 
     @Test
     fun `should not found account`(){
-        every { accountRepository.findByDocument(account.document) } returns null
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns null
 
         Assertions.assertThrows(AccountNotFoundException::class.java){
             extractUseCase.execute(extractCommand)

@@ -1,4 +1,4 @@
-package br.com.app.bank.manager.app.repository.jpa.entity
+package br.com.app.bank.manager.app.adapters.jpa.entity
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity

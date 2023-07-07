@@ -33,6 +33,7 @@
         <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <jakarta.el.version>3.0.4</jakarta.el.version>
         <mockk.version>1.9.3</mockk.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
 
     <repositories>
@@ -107,6 +108,17 @@
                 <artifactId>mockk</artifactId>
                 <version>${mockk.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

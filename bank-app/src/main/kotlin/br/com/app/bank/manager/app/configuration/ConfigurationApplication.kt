@@ -1,7 +1,7 @@
 package br.com.app.bank.manager.app.configuration
 
-import br.com.app.bank.manager.core.repository.AccountRepository
-import br.com.app.bank.manager.core.repository.TransactionRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
+import br.com.app.bank.manager.core.adapters.TransactionPersistenceAdapter
 import br.com.app.bank.manager.core.usecase.CreateAccountUseCase
 import br.com.app.bank.manager.core.usecase.ExtractUseCase
 import br.com.app.bank.manager.core.usecase.GetAccountUseCase
@@ -14,22 +14,22 @@ import org.springframework.context.annotation.Configuration
 class ConfigurationApplication {
 
     @Bean
-    fun createAccountUseCase(accountRepository: AccountRepository) =
-        CreateAccountUseCase(accountRepository)
+    fun createAccountUseCase(accountPersistenceAdapter: AccountPersistenceAdapter) =
+        CreateAccountUseCase(accountPersistenceAdapter)
 
     @Bean
-    fun getAccountUseCase(accountRepository: AccountRepository) =
-        GetAccountUseCase(accountRepository)
+    fun getAccountUseCase(accountPersistenceAdapter: AccountPersistenceAdapter) =
+        GetAccountUseCase(accountPersistenceAdapter)
 
     @Bean
-    fun updateBalanceUseCase(accountRepository: AccountRepository) =
-        UpdateBalanceUseCase(accountRepository)
+    fun updateBalanceUseCase(accountPersistenceAdapter: AccountPersistenceAdapter) =
+        UpdateBalanceUseCase(accountPersistenceAdapter)
 
     @Bean
-    fun transferAccountUseCase(accountRepository: AccountRepository) =
-        TransferAccountUseCase(accountRepository)
+    fun transferAccountUseCase(accountPersistenceAdapter: AccountPersistenceAdapter) =
+        TransferAccountUseCase(accountPersistenceAdapter)
 
     @Bean
-    fun extractUseCase(transactionRepository: TransactionRepository, accountRepository: AccountRepository) =
-        ExtractUseCase(transactionRepository, accountRepository)
+    fun extractUseCase(transactionPersistenceAdapter: TransactionPersistenceAdapter, accountPersistenceAdapter: AccountPersistenceAdapter) =
+        ExtractUseCase(transactionPersistenceAdapter, accountPersistenceAdapter)
 }

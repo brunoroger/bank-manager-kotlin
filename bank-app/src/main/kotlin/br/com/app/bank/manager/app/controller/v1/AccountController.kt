@@ -15,6 +15,8 @@ import br.com.app.bank.manager.core.usecase.GetAccountUseCase
 import br.com.app.bank.manager.core.usecase.TransferAccountUseCase
 import br.com.app.bank.manager.core.usecase.UpdateBalanceUseCase
 import br.com.app.bank.manager.domain.enums.Operation
+import io.swagger.annotations.ApiResponse
+import io.swagger.annotations.ApiResponses
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -34,13 +36,23 @@ class AccountController(
     private val extractUseCase: ExtractUseCase
     ) {
 
-    @PostMapping("/{document}")
+    @ApiResponses(value = [
+        ApiResponse(code = 201, message = "Account created"),
+        ApiResponse(code = 400, message = "Bad request"),
+        ApiResponse(code = 500, message = "Internal Server Error"),
+    ])
+    @PostMapping("/{document}", produces=["application/json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@PathVariable("document") document: String){
         createAccountUseCase.execute(CreateAccountCommand.Builder(document).toCommand())
     }
 
-    @GetMapping("/{document}")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Account found"),
+        ApiResponse(code = 404, message = "Account not found"),
+        ApiResponse(code = 500, message = "Internal Server Error"),
+    ])
+    @GetMapping("/{document}", produces=["application/json"])
     @ResponseStatus(HttpStatus.OK)
     fun get(@PathVariable("document") document: String): AccountResponse {
         val account = getAccountUseCase.execute(GetAccountCommand.Builder(document).toCommand())
@@ -51,7 +63,12 @@ class AccountController(
         )
     }
 
-    @PutMapping("/{document}/deposit/{amount}")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Deposit made successfully"),
+        ApiResponse(code = 404, message = "Account not found"),
+        ApiResponse(code = 500, message = "Internal Server Error"),
+    ])
+    @PutMapping("/{document}/deposit/{amount}", produces=["application/json"])
     @ResponseStatus(HttpStatus.OK)
     fun deposit(@PathVariable("document") document: String, @PathVariable("amount") amount: Double){
         updateBalanceUseCase.execute(
@@ -62,7 +79,12 @@ class AccountController(
         ).toCommand())
     }
 
-    @PutMapping("/{document}/withdraw/{amount}")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Withdrawal successful"),
+        ApiResponse(code = 404, message = "Account not found"),
+        ApiResponse(code = 500, message = "Internal Server Error"),
+    ])
+    @PutMapping("/{document}/withdraw/{amount}", produces=["application/json"])
     @ResponseStatus(HttpStatus.OK)
     fun withdraw(@PathVariable("document") document: String, @PathVariable("amount") amount: Double){
         updateBalanceUseCase.execute(UpdateBalanceCommand.Builder(
@@ -72,7 +94,12 @@ class AccountController(
         ).toCommand())
     }
 
-    @PutMapping("/{documentFrom}/transfer/{documentTo}/{amount}")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Transfer successfully completed"),
+        ApiResponse(code = 404, message = "Account not found"),
+        ApiResponse(code = 500, message = "Internal Server Error"),
+    ])
+    @PutMapping("/{documentFrom}/transfer/{documentTo}/{amount}", produces=["application/json"])
     @ResponseStatus(HttpStatus.OK)
     fun transfer(@PathVariable("documentFrom") documentFrom: String,
                  @PathVariable("documentTo") documentTo: String,
@@ -85,7 +112,12 @@ class AccountController(
         ).toCommand())
     }
 
-    @GetMapping("/{document}/extract")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Return extract account"),
+        ApiResponse(code = 404, message = "Account not found"),
+        ApiResponse(code = 500, message = "Internal Server Error"),
+    ])
+    @GetMapping("/{document}/extract", produces=["application/json"])
     @ResponseStatus(HttpStatus.OK)
     fun extract(@PathVariable("document") document: String) =
         extractUseCase.execute(ExtractCommand.Builder(document).toCommand()).map {
