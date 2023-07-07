@@ -1,8 +1,8 @@
-package br.com.app.bank.manager.app.repository
+package br.com.app.bank.manager.app.adapters
 
-import br.com.app.bank.manager.app.repository.jpa.TransactionJPARepository
-import br.com.app.bank.manager.app.repository.jpa.entity.AccountEntity
-import br.com.app.bank.manager.app.repository.jpa.entity.TransactionEntity
+import br.com.app.bank.manager.app.adapters.jpa.TransactionJPARepository
+import br.com.app.bank.manager.app.adapters.jpa.entity.AccountEntity
+import br.com.app.bank.manager.app.adapters.jpa.entity.TransactionEntity
 import br.com.app.bank.manager.domain.enums.Operation
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -14,13 +14,13 @@ import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
 import java.util.UUID
 
-class TransactionRepositoryImpTest{
+class TransactionPersistenceAdapterImpTest{
 
     @MockK
     private lateinit var transactionJPARepository: TransactionJPARepository
 
     @InjectMockKs
-    private lateinit var transactionRepositoryImp: TransactionRepositoryImp
+    private lateinit var transactionRepositoryImp: TransactionPersistenceAdapterImp
 
     private val listTransaction = listOf(
         TransactionEntity(

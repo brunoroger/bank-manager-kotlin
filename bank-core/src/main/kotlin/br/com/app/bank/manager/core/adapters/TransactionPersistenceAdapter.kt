@@ -1,7 +1,7 @@
-package br.com.app.bank.manager.core.repository
+package br.com.app.bank.manager.core.adapters
 
 import br.com.app.bank.manager.domain.Transaction
 
-interface TransactionRepository {
+interface TransactionPersistenceAdapter {
     fun findByDocument(document: String): List<Transaction>
 }

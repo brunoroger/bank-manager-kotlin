@@ -1,6 +1,6 @@
-package br.com.app.bank.manager.app.repository.jpa
+package br.com.app.bank.manager.app.adapters.jpa
 
-import br.com.app.bank.manager.app.repository.jpa.entity.TransactionEntity
+import br.com.app.bank.manager.app.adapters.jpa.entity.TransactionEntity
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository

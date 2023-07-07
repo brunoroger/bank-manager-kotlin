@@ -3,23 +3,23 @@ package br.com.app.bank.manager.core.usecase
 import br.com.app.bank.manager.core.command.TransferAccountCommand
 import br.com.app.bank.manager.core.exception.AccountNotFoundException
 import br.com.app.bank.manager.core.exception.TransferToSameDocumentException
-import br.com.app.bank.manager.core.repository.AccountRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import br.com.app.bank.manager.domain.Transaction
 import br.com.app.bank.manager.domain.enums.Operation
 
-class TransferAccountUseCase(private val accountRepository: AccountRepository) {
+class TransferAccountUseCase(private val accountPersistenceAdapter: AccountPersistenceAdapter) {
     fun execute(command: TransferAccountCommand){
         if (command.documentFrom == command.documentTo){
             throw TransferToSameDocumentException(command.documentFrom)
         }
 
-        val accountFrom = accountRepository.findByDocument(command.documentFrom)
+        val accountFrom = accountPersistenceAdapter.findByDocument(command.documentFrom)
             ?: throw AccountNotFoundException(command.documentFrom)
-        val accountTo = accountRepository.findByDocument(command.documentTo)
+        val accountTo = accountPersistenceAdapter.findByDocument(command.documentTo)
             ?: throw AccountNotFoundException(command.documentTo)
 
-        accountRepository.saveAll(
+        accountPersistenceAdapter.saveAll(
             listOf(
                 Account(
                     document = accountFrom.document,

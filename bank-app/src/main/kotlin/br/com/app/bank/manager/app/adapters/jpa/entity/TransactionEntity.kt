@@ -1,4 +1,4 @@
-package br.com.app.bank.manager.app.repository.jpa.entity
+package br.com.app.bank.manager.app.adapters.jpa.entity
 
 import java.time.ZonedDateTime
 import javax.persistence.Entity

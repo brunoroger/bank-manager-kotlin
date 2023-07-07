@@ -1,15 +1,15 @@
-package br.com.app.bank.manager.app.repository
+package br.com.app.bank.manager.app.adapters
 
-import br.com.app.bank.manager.app.repository.jpa.AccountJPARepository
-import br.com.app.bank.manager.app.repository.jpa.entity.AccountEntity
-import br.com.app.bank.manager.app.repository.jpa.entity.TransactionEntity
-import br.com.app.bank.manager.core.repository.AccountRepository
+import br.com.app.bank.manager.app.adapters.jpa.AccountJPARepository
+import br.com.app.bank.manager.app.adapters.jpa.entity.AccountEntity
+import br.com.app.bank.manager.app.adapters.jpa.entity.TransactionEntity
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import org.springframework.stereotype.Component
 
 @Component
-class AccountRepositoryImp(private val accountJPARepository: AccountJPARepository)
-    :AccountRepository {
+class AccountPersistenceAdapterImp(private val accountJPARepository: AccountJPARepository)
+    :AccountPersistenceAdapter {
     override fun findByDocument(document: String): Account? {
         val accountEntity = accountJPARepository.findById(document)
 

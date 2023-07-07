@@ -40,6 +40,10 @@ java -jar bank-app/target/bank-app.jar
 java -jar -Dspring.profiles.active=debug bank-app/target/bank-app.jar
 ```
 
+## Documentação da API
+
+Depois de subir a aplicação, acesse esse [link](http://localhost:8080/swagger-ui.html) para a documentação.
+
 ## Como rodar os testes integrados
 
 Depois de subir a aplicação, siga o passo a passo do README do projeto abaixo:

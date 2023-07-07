@@ -2,7 +2,7 @@ package br.com.app.bank.manager.core.usecase
 
 import br.com.app.bank.manager.core.command.CreateAccountCommand
 import br.com.app.bank.manager.core.exception.AccountDuplicatedException
-import br.com.app.bank.manager.core.repository.AccountRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 class CreateAccountUseCaseTest{
 
     @MockK
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountPersistenceAdapter: AccountPersistenceAdapter
 
     @InjectMockKs
     private lateinit var createAccountUseCase: CreateAccountUseCase
@@ -32,18 +32,18 @@ class CreateAccountUseCaseTest{
 
     @Test
     fun `should create account`(){
-        every { accountRepository.findByDocument(account.document) } returns null
-        every { accountRepository.save(any()) } returns Unit
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns null
+        every { accountPersistenceAdapter.save(any()) } returns Unit
 
         createAccountUseCase.execute(createAccountCommand)
 
-        verify { accountRepository.save(any()) }
+        verify { accountPersistenceAdapter.save(any()) }
     }
 
     @Test
     fun `should not create account with document duplicated`(){
-        every { accountRepository.findByDocument(account.document) } returns account
-        every { accountRepository.save(any()) } returns Unit
+        every { accountPersistenceAdapter.findByDocument(account.document) } returns account
+        every { accountPersistenceAdapter.save(any()) } returns Unit
 
         Assertions.assertThrows(
             AccountDuplicatedException::class.java

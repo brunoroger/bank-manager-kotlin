@@ -1,7 +1,7 @@
-package br.com.app.bank.manager.app.repository
+package br.com.app.bank.manager.app.adapters
 
-import br.com.app.bank.manager.app.repository.jpa.AccountJPARepository
-import br.com.app.bank.manager.app.repository.jpa.entity.AccountEntity
+import br.com.app.bank.manager.app.adapters.jpa.AccountJPARepository
+import br.com.app.bank.manager.app.adapters.jpa.entity.AccountEntity
 import br.com.app.bank.manager.domain.Account
 import br.com.app.bank.manager.domain.Transaction
 import br.com.app.bank.manager.domain.enums.Operation
@@ -15,13 +15,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.Optional
 
-class AccountRepositoryImpTest{
+class AccountPersistenceAdapterImpTest{
 
     @MockK
     private lateinit var accountJPARepository: AccountJPARepository
 
     @InjectMockKs
-    private lateinit var accountRepositoryImp: AccountRepositoryImp
+    private lateinit var accountRepositoryImp: AccountPersistenceAdapterImp
 
     private val account = Account("84091324940", 0.0, listOf(
         Transaction(

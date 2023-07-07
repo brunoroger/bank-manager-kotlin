@@ -3,7 +3,7 @@ package br.com.app.bank.manager.core.usecase
 import br.com.app.bank.manager.core.command.TransferAccountCommand
 import br.com.app.bank.manager.core.exception.AccountNotFoundException
 import br.com.app.bank.manager.core.exception.TransferToSameDocumentException
-import br.com.app.bank.manager.core.repository.AccountRepository
+import br.com.app.bank.manager.core.adapters.AccountPersistenceAdapter
 import br.com.app.bank.manager.domain.Account
 import br.com.app.bank.manager.domain.enums.Operation
 import io.mockk.MockKAnnotations
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test
 class TransferAccountUseCaseTest{
 
     @MockK
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountPersistenceAdapter: AccountPersistenceAdapter
 
     @InjectMockKs
     private lateinit var transferAccountUseCase: TransferAccountUseCase
@@ -39,13 +39,13 @@ class TransferAccountUseCaseTest{
 
     @Test
     fun `should transfer account`(){
-        every { accountRepository.findByDocument(accountFrom.document) } returns accountFrom
-        every { accountRepository.findByDocument(accountTo.document) } returns accountTo
-        every { accountRepository.saveAll(any()) } returns Unit
+        every { accountPersistenceAdapter.findByDocument(accountFrom.document) } returns accountFrom
+        every { accountPersistenceAdapter.findByDocument(accountTo.document) } returns accountTo
+        every { accountPersistenceAdapter.saveAll(any()) } returns Unit
 
         transferAccountUseCase.execute(command)
 
-        verify { accountRepository.saveAll(withArg {
+        verify { accountPersistenceAdapter.saveAll(withArg {
             Assertions.assertEquals(2, it.size)
             val accFrom = it[0]
             val accTo = it[1]
@@ -59,7 +59,7 @@ class TransferAccountUseCaseTest{
 
     @Test
     fun `should throw exception with some documents`(){
-        every { accountRepository.findByDocument(accountFrom.document) } returns accountFrom
+        every { accountPersistenceAdapter.findByDocument(accountFrom.document) } returns accountFrom
 
         Assertions.assertThrows(TransferToSameDocumentException::class.java){
             transferAccountUseCase.execute(TransferAccountCommand.Builder(
@@ -72,7 +72,7 @@ class TransferAccountUseCaseTest{
 
     @Test
     fun `should not found document from`(){
-        every { accountRepository.findByDocument(accountFrom.document) } returns null
+        every { accountPersistenceAdapter.findByDocument(accountFrom.document) } returns null
 
         Assertions.assertThrows(AccountNotFoundException::class.java){
             transferAccountUseCase.execute(command)
@@ -81,8 +81,8 @@ class TransferAccountUseCaseTest{
 
     @Test
     fun `should not found document to`(){
-        every { accountRepository.findByDocument(accountFrom.document) } returns accountFrom
-        every { accountRepository.findByDocument(accountTo.document) } returns null
+        every { accountPersistenceAdapter.findByDocument(accountFrom.document) } returns accountFrom
+        every { accountPersistenceAdapter.findByDocument(accountTo.document) } returns null
 
         Assertions.assertThrows(AccountNotFoundException::class.java){
             transferAccountUseCase.execute(command)
